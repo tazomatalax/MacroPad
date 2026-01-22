@@ -1,4 +1,5 @@
 # MacroPad
+
 So you've ordered a chinese macro keypad and the software supplied doesn't make any sense to you? That was my problem as well...
 
 ![image](https://github.com/rOzzy1987/MacroPad/assets/617600/adf5b698-9ba4-4060-ade0-1fb078cac21c)
@@ -7,11 +8,22 @@ Enter the RSoft MacroPad!
 
 ![image](https://github.com/rOzzy1987/MacroPad/assets/617600/5fd74dc1-b420-4388-be8b-f427a05bedca)
 
+## Requirements
+
+- Windows 10 or later
+- [.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) (if not already installed)
 
 ## Installation
 No need to install anything, just download and extract a [Release](https://github.com/rOzzy1987/MacroPad/releases)
 
-Alternatively you ca clone the repository, build and run.
+Alternatively you can clone the repository, build and run:
+
+```bash
+git clone https://github.com/rOzzy1987/MacroPad.git
+cd MacroPad/src
+dotnet build
+dotnet run --project RSoft.MacroPad
+```
 
 ## GUI
 The main funcitons of the GUI are displayed on the image below

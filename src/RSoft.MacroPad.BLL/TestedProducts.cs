@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RSoft.MacroPad.BLL;
 
-namespace RSoft.MacroPad.BLL
+/// <summary>
+/// Tracks which macro pad products have been tested with this software.
+/// </summary>
+public static class TestedProducts
 {
-    public static class TestedProducts
-    {
-        /// <summary>
-        /// indicates which products are tested and working with this software
-        /// </summary>
-        private static (ushort VendorId, ushort ProductId)[] _values { get; } = new[] 
-        {
-            (4489,34960) 
-        }.Select(x => ((ushort)x.Item1,(ushort)x.Item2)).ToArray();
+    /// <summary>
+    /// Collection of tested vendor/product ID pairs.
+    /// </summary>
+    private static readonly HashSet<(ushort VendorId, ushort ProductId)> TestedDevices =
+    [
+        (4489, 34960)
+    ];
 
-        /// <summary>
-        /// Checks if product is already tested and working with this library
-        /// </summary>
-        /// <param name="VendorId"></param>
-        /// <param name="ProductId"></param>
-        /// <returns></returns>
-        public static bool IsTested(ushort VendorId, ushort ProductId) 
-            => _values.Contains((VendorId, ProductId));
-    }
+    /// <summary>
+    /// Checks if a product has been tested with this software.
+    /// </summary>
+    /// <param name="vendorId">The USB vendor ID.</param>
+    /// <param name="productId">The USB product ID.</param>
+    /// <returns>True if the product has been tested; otherwise, false.</returns>
+    public static bool IsTested(ushort vendorId, ushort productId) =>
+        TestedDevices.Contains((vendorId, productId));
 }

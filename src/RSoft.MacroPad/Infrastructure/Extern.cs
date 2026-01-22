@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using RSoft.MacroPad.BLL.Infrasturture.Model;
+using RSoft.MacroPad.BLL.Infrastructure.Model;
 using Windows.Win32.Foundation;
 
 namespace RSoft.MacroPad.Infrastructure

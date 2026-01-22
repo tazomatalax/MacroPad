@@ -1,25 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
-namespace RSoft.MacroPad.BLL
+namespace RSoft.MacroPad.BLL;
+
+/// <summary>
+/// Provides logging functionality for HID communication diagnostics.
+/// </summary>
+public static class HidLog
 {
-    public static class HidLog
-    {
-        const string FILE = "hid.log";
-        public static void ClearLog()
-        {
-            File.WriteAllText(FILE, "");
-        }
+    private const string LogFileName = "hid.log";
 
-        public static void AppendMsg(byte reportId, IEnumerable<byte> data)
+    /// <summary>
+    /// Clears the HID log file.
+    /// </summary>
+    public static void ClearLog()
+    {
+        try
         {
-            File.AppendAllText(FILE, $"{reportId}\n\n");
-            File.AppendAllText(FILE, string.Join("\n", data));
-            File.AppendAllText(FILE, "\n------\n");
+            File.WriteAllText(LogFileName, string.Empty);
+        }
+        catch
+        {
+            // Silently ignore logging failures
+        }
+    }
+
+    /// <summary>
+    /// Appends a message to the HID log file.
+    /// </summary>
+    /// <param name="reportId">The HID report ID.</param>
+    /// <param name="data">The data bytes to log.</param>
+    public static void AppendMsg(byte reportId, IEnumerable<byte> data)
+    {
+        try
+        {
+            var logEntry = $"""
+                {reportId}
+
+                {string.Join(Environment.NewLine, data)}
+                ------
+
+                """;
+            File.AppendAllText(LogFileName, logEntry);
+        }
+        catch
+        {
+            // Silently ignore logging failures
         }
     }
 }

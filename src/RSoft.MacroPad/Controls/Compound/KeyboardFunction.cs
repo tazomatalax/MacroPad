@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using RSoft.MacroPad.BLL.Infrasturture.Model;
-using RSoft.MacroPad.BLL.Infrasturture.Physical;
+using RSoft.MacroPad.BLL.Infrastructure.Model;
+using RSoft.MacroPad.BLL.Infrastructure.Physical;
 using RSoft.MacroPad.Model;
 
 namespace RSoft.MacroPad.Controls.Compound

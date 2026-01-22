@@ -1,4 +1,4 @@
-﻿namespace RSoft.MacroPad.Forms
+namespace RSoft.MacroPad.Forms
 {
     partial class MainForm
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            BLL.Infrasturture.Physical.KeyboardLayout keyboardLayout2 = new BLL.Infrasturture.Physical.KeyboardLayout();
+            BLL.Infrastructure.Physical.KeyboardLayout keyboardLayout2 = new BLL.Infrastructure.Physical.KeyboardLayout();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             groupBox1 = new System.Windows.Forms.GroupBox();
             keyboardVisual1 = new Controls.Visual.KeyboardVisual();
@@ -99,7 +99,7 @@
             keyboardVisual1.Location = new System.Drawing.Point(7, 38);
             keyboardVisual1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             keyboardVisual1.Name = "keyboardVisual1";
-            keyboardVisual1.SelectedAction = BLL.Infrasturture.Model.InputAction.Key1;
+            keyboardVisual1.SelectedAction = BLL.Infrastructure.Model.InputAction.Key1;
             keyboardVisual1.Size = new System.Drawing.Size(1964, 952);
             keyboardVisual1.TabIndex = 0;
             // 
@@ -130,13 +130,13 @@
             keyboardLayout2.SupportsColor = false;
             keyboardLayout2.SupportsDelay = false;
             keyboardFunction1.KeyboardLayout = keyboardLayout2;
-            keyboardFunction1.LedColor = BLL.Infrasturture.Model.LedColor.Random;
-            keyboardFunction1.LedMode = BLL.Infrasturture.Model.LedMode.Mode0;
+            keyboardFunction1.LedColor = BLL.Infrastructure.Model.LedColor.Random;
+            keyboardFunction1.LedMode = BLL.Infrastructure.Model.LedMode.Mode0;
             keyboardFunction1.Location = new System.Drawing.Point(7, 38);
             keyboardFunction1.Margin = new System.Windows.Forms.Padding(9, 6, 9, 6);
             keyboardFunction1.MediaKey = System.Windows.Forms.Keys.MediaNextTrack;
-            keyboardFunction1.MouseButton = BLL.Infrasturture.Model.MouseButton.Left;
-            keyboardFunction1.MouseModifier = BLL.Infrasturture.Model.Modifier.None;
+            keyboardFunction1.MouseButton = BLL.Infrastructure.Model.MouseButton.Left;
+            keyboardFunction1.MouseModifier = BLL.Infrastructure.Model.Modifier.None;
             keyboardFunction1.Name = "keyboardFunction1";
             keyboardFunction1.Size = new System.Drawing.Size(1964, 895);
             keyboardFunction1.TabIndex = 0;

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Forms;
-using RSoft.MacroPad.BLL.Infrasturture.Model;
+using RSoft.MacroPad.BLL.Infrastructure.Model;
 using RSoft.MacroPad.Infrastructure;
 
 namespace RSoft.MacroPad.Controls.Tabs

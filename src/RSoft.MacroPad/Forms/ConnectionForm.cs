@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RSoft.MacroPad.BLL.Infrasturture.Protocol;
-using RSoft.MacroPad.BLL.Infrasturture.UsbDevice;
+using RSoft.MacroPad.BLL.Infrastructure.Protocol;
+using RSoft.MacroPad.BLL.Infrastructure.UsbDevice;
 
 namespace RSoft.MacroPad.Forms
 {

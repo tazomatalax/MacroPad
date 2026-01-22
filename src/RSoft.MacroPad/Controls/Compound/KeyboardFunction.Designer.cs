@@ -1,4 +1,4 @@
-﻿namespace RSoft.MacroPad.Controls.Compound
+namespace RSoft.MacroPad.Controls.Compound
 {
     partial class KeyboardFunction
     {
@@ -156,8 +156,8 @@
             mouseButtonsTab1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             mouseButtonsTab1.MaximumSize = new System.Drawing.Size(2100, 138);
             mouseButtonsTab1.MinimumSize = new System.Drawing.Size(933, 138);
-            mouseButtonsTab1.Modifier = BLL.Infrasturture.Model.Modifier.None;
-            mouseButtonsTab1.MouseButton = BLL.Infrasturture.Model.MouseButton.Left;
+            mouseButtonsTab1.Modifier = BLL.Infrastructure.Model.Modifier.None;
+            mouseButtonsTab1.MouseButton = BLL.Infrastructure.Model.MouseButton.Left;
             mouseButtonsTab1.Name = "mouseButtonsTab1";
             mouseButtonsTab1.Size = new System.Drawing.Size(1221, 138);
             mouseButtonsTab1.TabIndex = 0;
@@ -176,14 +176,14 @@
             // 
             // ledTab1
             // 
-            ledTab1.Color = BLL.Infrasturture.Model.LedColor.Random;
+            ledTab1.Color = BLL.Infrastructure.Model.LedColor.Random;
             ledTab1.ColorsSupported = true;
             ledTab1.Dock = System.Windows.Forms.DockStyle.Fill;
             ledTab1.Location = new System.Drawing.Point(4, 3);
             ledTab1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             ledTab1.MaximumSize = new System.Drawing.Size(2100, 138);
             ledTab1.MinimumSize = new System.Drawing.Size(933, 138);
-            ledTab1.Mode = BLL.Infrasturture.Model.LedMode.Mode0;
+            ledTab1.Mode = BLL.Infrastructure.Model.LedMode.Mode0;
             ledTab1.ModeCount = 3;
             ledTab1.Name = "ledTab1";
             ledTab1.Size = new System.Drawing.Size(1229, 138);

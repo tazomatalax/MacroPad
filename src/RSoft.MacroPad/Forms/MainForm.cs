@@ -1,183 +1,201 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-using RSoft.MacroPad.BLL;
-using RSoft.MacroPad.BLL.Infrasturture;
-using RSoft.MacroPad.BLL.Infrasturture.Configuration;
-using RSoft.MacroPad.BLL.Infrasturture.Model;
-using RSoft.MacroPad.BLL.Infrasturture.Physical;
-using RSoft.MacroPad.BLL.Infrasturture.Protocol;
-using RSoft.MacroPad.BLL.Infrasturture.Protocol.Mappers;
-using RSoft.MacroPad.BLL.Infrasturture.UsbDevice;
+using RSoft.MacroPad.BLL.Infrastructure.Protocol.Mappers;
 using RSoft.MacroPad.Infrastructure;
 using Windows.Win32;
-using Windows.Win32.Foundation;
 using Windows.Win32.UI.Input.KeyboardAndMouse;
 
-namespace RSoft.MacroPad.Forms
+namespace RSoft.MacroPad.Forms;
+
+public partial class MainForm : Form
 {
-    public partial class MainForm : Form
+    private KeyboardLayout[] _layouts = [];
+    private readonly LayoutParser _parser = new();
+    private readonly IUsb _usb = new HidLibUsb();
+    private readonly ConfigurationReader _configReader = new();
+    private readonly ComposerRepository _composerRepository = new();
+
+    public MainForm()
     {
-        private KeyboardLayout[] _layouts;
-        private LayoutParser _parser = new LayoutParser();
-        private IUsb _usb = new HidLibUsb();
-        private ConfigurationReader _configReader = new ConfigurationReader();
-        private ComposerRepository _composerRepository = new ComposerRepository();
+        InitializeComponent();
+        InitializeLayouts();
+        InitializeUsb();
+    }
 
+    #region Init
 
-        public MainForm()
+    private void InitializeUsb()
+    {
+        var config = _configReader.Read("config.txt");
+        if (config is not null)
+            _usb.SupportedDevices = config.SupportedDevices;
+
+        _usb.OnConnected += OnDeviceConnected;
+    }
+
+    private void OnDeviceConnected(object? sender, EventArgs e)
+    {
+        var layout = _layouts.FirstOrDefault(l =>
+            l.Products?.Any(p => p.VendorId == _usb.VendorId && p.ProductId == _usb.ProductId) == true);
+
+        if (layout is not null)
         {
-            InitializeComponent();
-
-            InitializeLayouts();
-            InitializeUsb();
+            keyboardVisual1.KeyboardLayout = layout;
+            keyboardFunction1.KeyboardLayout = layout;
         }
 
+        lblCommStatus.Text = $"Connected: ({_usb.VendorId}:{_usb.ProductId}) Protocol: {_usb.ProtocolType}.id{_usb.Version}";
 
-        #region Init
-        private void InitializeUsb()
+        ShowDisclaimerIfNeeded();
+    }
+
+    private void ShowDisclaimerIfNeeded()
+    {
+        if (!TestedProducts.IsTested(_usb.VendorId, _usb.ProductId))
         {
-            var config = _configReader.Read("config.txt");
-            if (config != null)
-                _usb.SupportedDevices = config.SupportedDevices;
+            using var disclaimer = new DisclaimerForm();
+            disclaimer.ShowDialog();
+        }
+    }
 
-            _usb.OnConnected += (s, e) =>
-            {
-                var layout = _layouts.FirstOrDefault(l => l.Products.Any(p => p.VendorId == _usb.VendorId && p.ProductId == _usb.ProductId));
+    private void SetUsbStatus(bool connected)
+    {
+        lblStatus.Text = connected ? "Connected" : "Disconnected";
+        lblStatus.BackColor = connected ? Color.FromArgb(0, 128, 0) : Color.FromArgb(128, 0, 0);
+        tsSend.Enabled = connected;
+    }
 
-                if (layout != null)
-                {
-                    keyboardVisual1.KeyboardLayout = layout;
-                    keyboardFunction1.KeyboardLayout = layout;
-                }
+    private void InitializeLayouts()
+    {
+        _layouts = _parser.Parse("layouts.txt");
 
-                lblCommStatus.Text = $"Connected: ({_usb.VendorId}:{_usb.ProductId}) Protocol: {_usb.ProtocolType}.id{_usb.Version}";
+        if (tsLayout.DropDown is ToolStripDropDownMenu dropDown)
+            dropDown.ShowImageMargin = false;
 
-                ShowDisclaimerIfNeeded();
-            };
+        tsLayout.DropDownItems.Clear();
+        tsLayout.DropDownItems.AddRange(_layouts.Select(CreateLayoutMenuItem).ToArray());
+    }
+
+    private ToolStripMenuItem CreateLayoutMenuItem(KeyboardLayout layout)
+    {
+        var menuItem = new ToolStripMenuItem
+        {
+            Text = layout.Name,
+            AutoSize = true,
+            Tag = layout
+        };
+
+        menuItem.Click += (s, e) =>
+        {
+            StopRecording(s, e);
+            keyboardVisual1.KeyboardLayout = layout;
+            keyboardFunction1.KeyboardLayout = layout;
+        };
+
+        return menuItem;
+    }
+
+    private void Tick(object? sender, EventArgs e) => SetUsbStatus(_usb.Connect());
+
+    private void StopRecording(object? sender, EventArgs e) => keyboardFunction1.StopRecording();
+
+    #endregion
+
+    private void tsSend_Click(object? sender, EventArgs e)
+    {
+        StopRecording(sender, e);
+
+        if (keyboardVisual1.SelectedAction == InputAction.None)
+        {
+            MessageBox.Show("Please select a key or knob action to map!");
+            return;
         }
 
+        var composer = _composerRepository.Get(_usb.ProtocolType, _usb.Version);
+        var reports = GetReportsForCurrentFunction(composer);
 
-        private void ShowDisclaimerIfNeeded()
+        HidLog.ClearLog();
+
+        var success = true;
+        foreach (var report in reports)
         {
-            if (!TestedProducts.IsTested(_usb.VendorId, _usb.ProductId))
+            if (!_usb.Write(report))
             {
-                new DisclaimerForm().ShowDialog();
+                success = false;
+                break;
             }
         }
 
-        private void SetUsbStatus(bool connected)
-        {
-            lblStatus.Text = connected ? "Connected" : "Disconnected";
-            lblStatus.BackColor = connected ? Color.FromArgb(0, 128, 0) : Color.FromArgb(128, 0, 0);
-            tsSend.Enabled = connected;
-        }
+        lblCommStatus.Text = success ? "Writing successful" : "Write failed";
+        lblCommStatus.Text += $" [{DateTime.Now:T}]";
+    }
 
-        private void InitializeLayouts()
+    private IEnumerable<Report> GetReportsForCurrentFunction(ReportComposer composer)
+    {
+        return keyboardFunction1.Function switch
         {
-            _layouts = _parser.Parse("layouts.txt");
-            ((ToolStripDropDownMenu)tsLayout.DropDown).ShowImageMargin = false;
-            tsLayout.DropDownItems.Clear();
-            tsLayout.DropDownItems.AddRange(_layouts.Select(l =>
+            Model.SetFunction.LED => composer.Led(
+                keyboardVisual1.Layer,
+                keyboardFunction1.LedMode,
+                keyboardFunction1.LedColor),
+
+            Model.SetFunction.KeySequence => GetKeySequenceReports(composer),
+
+            Model.SetFunction.MediaKey => composer.Media(
+                keyboardVisual1.SelectedAction,
+                keyboardVisual1.Layer,
+                MediaKeyMapper.Map((VirtualKey)keyboardFunction1.MediaKey)),
+
+            Model.SetFunction.Mouse => composer.Mouse(
+                keyboardVisual1.SelectedAction,
+                keyboardVisual1.Layer,
+                keyboardFunction1.MouseButton,
+                keyboardFunction1.MouseModifier),
+
+            _ => []
+        };
+    }
+
+    private IEnumerable<Report> GetKeySequenceReports(ReportComposer composer)
+    {
+        var currentLayout = PInvoke.GetKeyboardLayout(0);
+        var enUsLayout = PInvoke.LoadKeyboardLayout("00000409", ACTIVATE_KEYBOARD_LAYOUT_FLAGS.KLF_ACTIVATE);
+
+        try
+        {
+            var keyMappings = keyboardFunction1.KeySequence.Select(s =>
             {
-                var result = new ToolStripMenuItem()
-                {
-                    Text = l.Name,
-                    AutoSize = true,
-                    Tag = l
-                };
+                var virtualKey = (VirtualKey)PInvoke.MapVirtualKeyEx(
+                    (uint)s.ScanCode,
+                    MAP_VIRTUAL_KEY_TYPE.MAPVK_VSC_TO_VK,
+                    enUsLayout);
 
-                result.Click += (s, e) =>
-                {
-                    StopRecording(s, e);
-                    keyboardVisual1.KeyboardLayout = l;
-                    keyboardFunction1.KeyboardLayout = l;
-                };
+                return (
+                    KeyCodeMapper.Map(virtualKey),
+                    ModifierMapper.Map(s.ShiftL, s.ShiftR, s.AltL, s.AltR, s.CtrlL, s.CtrlR, s.WinL, s.WinR)
+                );
+            });
 
-                return result;
-
-            }).ToArray());
+            return composer.Key(
+                keyboardVisual1.SelectedAction,
+                keyboardVisual1.Layer,
+                keyboardFunction1.Delay,
+                keyMappings);
         }
-
-        private void Tick(object sender, EventArgs e)
+        finally
         {
-            SetUsbStatus(_usb.Connect());
+            PInvoke.ActivateKeyboardLayout(currentLayout, ACTIVATE_KEYBOARD_LAYOUT_FLAGS.KLF_ACTIVATE);
         }
+    }
 
-        private void StopRecording(object sender, EventArgs e)
-        {
-            keyboardFunction1.StopRecording();
-        }
+    private void tsAbout_Click(object? sender, EventArgs e)
+    {
+        StopRecording(sender, e);
+        using var aboutBox = new AboutBox();
+        aboutBox.ShowDialog();
+    }
 
-        #endregion;  
-
-        private void tsSend_Click(object sender, EventArgs e)
-        {
-            StopRecording(sender, e);
-            if (keyboardVisual1.SelectedAction == InputAction.None)
-            {
-                MessageBox.Show("Please select a key or knob action to map!");
-            }
-            var composer = _composerRepository.Get(_usb.ProtocolType, _usb.Version);
-
-            IEnumerable<Report> reports = Enumerable.Empty<Report>();
-            switch (keyboardFunction1.Function)
-            {
-                case Model.SetFunction.LED:
-                    reports = composer.Led(keyboardVisual1.Layer, keyboardFunction1.LedMode, keyboardFunction1.LedColor);
-                    break;
-                case Model.SetFunction.KeySequence:
-                    var currentLayout = PInvoke.GetKeyboardLayout(0);
-                    var enUsLayout = PInvoke.LoadKeyboardLayout("00000409", ACTIVATE_KEYBOARD_LAYOUT_FLAGS.KLF_ACTIVATE);
-
-                    reports = composer.Key(keyboardVisual1.SelectedAction, keyboardVisual1.Layer, keyboardFunction1.Delay,
-                        keyboardFunction1.KeySequence.Select(s => (
-                        KeyCodeMapper.Map((VirtualKey)PInvoke.MapVirtualKeyEx((uint)s.ScanCode, MAP_VIRTUAL_KEY_TYPE.MAPVK_VSC_TO_VK, enUsLayout)),
-                        ModifierMapper.Map(s.ShiftL, s.ShiftR, s.AltL, s.AltR, s.CtrlL, s.CtrlR, s.WinL, s.WinR))));
-                    PInvoke.ActivateKeyboardLayout(currentLayout, ACTIVATE_KEYBOARD_LAYOUT_FLAGS.KLF_ACTIVATE);
-                    break;
-                case Model.SetFunction.MediaKey:
-                    reports = composer.Media(keyboardVisual1.SelectedAction, keyboardVisual1.Layer, MediaKeyMapper.Map((VirtualKey)keyboardFunction1.MediaKey));
-                    break;
-                case Model.SetFunction.Mouse:
-                    reports = composer.Mouse(keyboardVisual1.SelectedAction, keyboardVisual1.Layer, keyboardFunction1.MouseButton, keyboardFunction1.MouseModifier);
-                    break;
-            }
-            bool success = true;
-            HidLog.ClearLog();
-            foreach (var report in reports)
-            {
-                if (!_usb.Write(report))
-                {
-                    success = false;
-                    break;
-                }
-            }
-            lblCommStatus.Text = success
-                ? "Writing successful"
-                : "Write failed";
-            lblCommStatus.Text += $" [{DateTime.Now.ToString("T")}]";
-        }
-
-        private void tsAbout_Click(object sender, EventArgs e)
-        {
-            StopRecording(sender, e);
-            var aboutBox = new AboutBox();
-            aboutBox.ShowDialog();
-        }
-
-        private void tsSetParams_Click(object sender, EventArgs e)
-        {
-            var f = new ConnectionForm(_usb);
-            f.ShowDialog();
-        }
+    private void tsSetParams_Click(object? sender, EventArgs e)
+    {
+        using var connectionForm = new ConnectionForm(_usb);
+        connectionForm.ShowDialog();
     }
 }

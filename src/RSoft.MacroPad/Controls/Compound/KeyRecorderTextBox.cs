@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,8 +6,8 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using RSoft.MacroPad.BLL.Infrasturture.Model;
-using RSoft.MacroPad.BLL.Infrasturture.Protocol.Mappers;
+using RSoft.MacroPad.BLL.Infrastructure.Model;
+using RSoft.MacroPad.BLL.Infrastructure.Protocol.Mappers;
 using RSoft.MacroPad.Controls.Simple;
 using RSoft.MacroPad.Infrastructure;
 using RSoft.MacroPad.Model;
