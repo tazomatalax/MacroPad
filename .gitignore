@@ -7,3 +7,6 @@ packages/
 
 # Runtime/logs
 src/hid.log
+
+# Publish outputs
+publish/
