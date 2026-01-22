@@ -7,10 +7,11 @@
     <LangVersion>latest</LangVersion>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <!-- <ApplicationIcon>Resources\icon.ico</ApplicationIcon> -->
     <Title>RSoft MacroPad</Title>
     <AnalysisLevel>latest</AnalysisLevel>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <GenerateResourceWarnOnBinaryFormatterUse>false</GenerateResourceWarnOnBinaryFormatterUse>
   </PropertyGroup>
 
   <PropertyGroup>

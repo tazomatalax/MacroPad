@@ -11,9 +11,9 @@ namespace RSoft.MacroPad.BLL.Infrastructure.Physical
 
         public virtual Vector Position { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public IEnumerable<InputAction> Actions { get; protected set; }
+        public IEnumerable<InputAction> Actions { get; protected set; } = [];
     }
 
     public class PhysicalButton : PhysicalControl
@@ -22,8 +22,9 @@ namespace RSoft.MacroPad.BLL.Infrastructure.Physical
 
         public PhysicalButton(int idx)
         {
+            Name = $"Button {idx}";
             Size = new Vector(20, 20);
-            Actions = new InputAction[] { (InputAction)idx };
+            Actions = [(InputAction)idx];
         }
     }
 
@@ -33,15 +34,16 @@ namespace RSoft.MacroPad.BLL.Infrastructure.Physical
 
         public PhysicalKnob(int idx)
         {
+            Name = $"Knob {idx}";
             Size = new Vector(20, 20);
 
             var i = idx * 3 + 20;
-            Actions = new[]
-            {
+            Actions =
+            [
                 (InputAction)i,
                 (InputAction)i+1,
                 (InputAction)i+2,
-            };
+            ];
         }
     }
 }

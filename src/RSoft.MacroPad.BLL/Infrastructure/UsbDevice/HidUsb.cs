@@ -11,7 +11,7 @@ namespace RSoft.MacroPad.BLL.Infrastructure.UsbDevice
 
         public override bool Write(Report report)
         {
-            return _hid.Write(new report(report.ReportId, report.Data)) == Hid.HID_RETURN.SUCCESS;
+            return _hid.Write(new HidReport(report.ReportId, report.Data)) == Hid.HID_RETURN.SUCCESS;
         }
 
         protected override bool CheckIfConnectedInternal()
@@ -28,7 +28,7 @@ namespace RSoft.MacroPad.BLL.Infrastructure.UsbDevice
                     VendorId = dev.VendorId;
                     ProductId = dev.ProductId;
 
-                    ProtocolType = dev.protocolType;
+                    ProtocolType = dev.ProtocolType;
 
                     Connected();
                     return IsConnected = true;

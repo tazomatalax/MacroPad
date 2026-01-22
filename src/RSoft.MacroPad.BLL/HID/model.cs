@@ -41,12 +41,12 @@ namespace HID
         public ushort NumberFeatureDataIndices;
     }
 
-    public class report : EventArgs
+    public class HidReport : EventArgs
     {
         public readonly byte reportID;
         public readonly byte[] reportBuff;
 
-        public report(byte id, byte[] arrayBuff)
+        public HidReport(byte id, byte[] arrayBuff)
         {
             this.reportID = id;
             this.reportBuff = arrayBuff;

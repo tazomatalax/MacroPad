@@ -5,9 +5,9 @@ namespace RSoft.MacroPad.BLL.Infrastructure.Physical
 {
     public class KeyboardLayout
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public IEnumerable<(ushort VendorId, ushort ProductId)> Products { get; set; }
+        public IEnumerable<(ushort VendorId, ushort ProductId)> Products { get; set; } = [];
 
         public byte LayerCount { get; set; }
         public byte MaxCharacters { get; set; }
@@ -15,7 +15,7 @@ namespace RSoft.MacroPad.BLL.Infrastructure.Physical
         public bool SupportsColor { get; set; }
         public byte LedModeCount { get; set; }
 
-        public IEnumerable<PhysicalControl> Controls { get; set; }
+        public IEnumerable<PhysicalControl> Controls { get; set; } = [];
 
         public override string ToString()
         {
