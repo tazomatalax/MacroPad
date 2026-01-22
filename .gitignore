@@ -4,3 +4,6 @@ obj/
 packages/
 *.user
 *.bin/
+
+# Runtime/logs
+src/hid.log
