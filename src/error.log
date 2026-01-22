@@ -1,0 +1,14 @@
+[22/01/2026 2:43 PM] Exception at Main()
+System.IO.FileNotFoundException
+Could not find file 'C:\Users\vanderwt\OneDrive - scion\Documents\Software and Scripts\hotkey-app\macropad\src\layouts.txt'.
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Encoding encoding, Int32 bufferSize)
+   at System.IO.File.ReadAllLines(String path, Encoding encoding)
+   at RSoft.MacroPad.BLL.Infrastructure.Physical.LayoutParser.Parse(String path) in C:\Users\vanderwt\OneDrive - scion\Documents\Software and Scripts\hotkey-app\macropad\src\RSoft.MacroPad.BLL\Infrastructure\Physical\LayoutParser.cs:line 12
+   at RSoft.MacroPad.Forms.MainForm.InitializeLayouts() in C:\Users\vanderwt\OneDrive - scion\Documents\Software and Scripts\hotkey-app\macropad\src\RSoft.MacroPad\Forms\MainForm.cs:line 68
+   at RSoft.MacroPad.Forms.MainForm..ctor() in C:\Users\vanderwt\OneDrive - scion\Documents\Software and Scripts\hotkey-app\macropad\src\RSoft.MacroPad\Forms\MainForm.cs:line 19
+   at RSoft.MacroPad.Program.Main() in C:\Users\vanderwt\OneDrive - scion\Documents\Software and Scripts\hotkey-app\macropad\src\RSoft.MacroPad\Program.cs:line 20
+

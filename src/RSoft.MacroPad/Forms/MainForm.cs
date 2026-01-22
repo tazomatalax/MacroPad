@@ -24,7 +24,8 @@ public partial class MainForm : Form
 
     private void InitializeUsb()
     {
-        var config = _configReader.Read("config.txt");
+        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.txt");
+        var config = _configReader.Read(configPath);
         if (config is not null)
             _usb.SupportedDevices = config.SupportedDevices;
 
@@ -65,7 +66,8 @@ public partial class MainForm : Form
 
     private void InitializeLayouts()
     {
-        _layouts = _parser.Parse("layouts.txt");
+        var layoutPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "layouts.txt");
+        _layouts = _parser.Parse(layoutPath);
 
         if (tsLayout.DropDown is ToolStripDropDownMenu dropDown)
             dropDown.ShowImageMargin = false;
