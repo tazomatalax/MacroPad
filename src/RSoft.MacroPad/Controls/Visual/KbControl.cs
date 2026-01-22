@@ -12,8 +12,8 @@ namespace RSoft.MacroPad.Controls.Visual
         public static Color BorderColor { get; set; }
         public static Color ControlColor { get; set; }
         public static Color TextColor { get; set; }
-        public static Color HighlightedColor => Color.FromArgb(0x40800000);
-        public static Color HoverColor => Color.FromArgb(0x20000000);
+        public static Color HighlightedColor => Color.FromArgb(0x60, 30, 144, 255); // DODGER BLUE transparent
+        public static Color HoverColor => Color.FromArgb(0x30, 30, 144, 255);
 
         public static float BorderSize { get; set; } = 2;
 

@@ -16,6 +16,7 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
         InitializeLayouts();
         InitializeUsb();
     }
@@ -60,7 +61,7 @@ public partial class MainForm : Form
     private void SetUsbStatus(bool connected)
     {
         lblStatus.Text = connected ? "Connected" : "Disconnected";
-        lblStatus.BackColor = connected ? Color.FromArgb(0, 128, 0) : Color.FromArgb(128, 0, 0);
+        lblStatus.BackColor = connected ? Color.SeaGreen : Color.IndianRed;
         tsSend.Enabled = connected;
     }
 

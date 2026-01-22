@@ -45,10 +45,10 @@ namespace RSoft.MacroPad.Controls.Visual
             InitializeComponent();
 
             unchecked {
-                _backdropColor = Color.FromArgb((int)0xFF446688);
-                _buttonColor = Color.FromArgb((int)0xFFCCCCCC);
-                _textColor = Color.FromArgb((int)0xFF000020);
-                _borderColor = Color.Black;
+                _backdropColor = Color.FromArgb(245, 247, 250);
+                _buttonColor = Color.White;
+                _textColor = Color.FromArgb(45, 45, 48);
+                _borderColor = Color.FromArgb(200, 200, 200);
             }
 
             FunctionSelected += (s, e) => Highlight(e);
@@ -113,11 +113,15 @@ namespace RSoft.MacroPad.Controls.Visual
                         Location = new Point(x, 0),
                         Size = new Size(50, 24),
                         Checked = i == 0,
-                        Tag = (byte)(i + 1)
+                        Tag = (byte)(i + 1),
+                        Appearance = Appearance.Button,
+                        FlatStyle = FlatStyle.Flat,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        BackColor = Color.White
                     };
                     rb.Click += LayerChanged;
                     Controls.Add(rb);
-                    x += 50;
+                    x += 52;
                 }
             }
             layer = Math.Min(KeyboardLayout.LayerCount, layer);
@@ -127,7 +131,7 @@ namespace RSoft.MacroPad.Controls.Visual
             KbControl.BorderColor = _borderColor;
             KbControl.ControlColor = _buttonColor;
             KbControl.TextColor = _textColor;
-            KbControl.BorderSize = 2f;
+            KbControl.BorderSize = 1f;
 
             foreach (var control in KeyboardLayout.Controls)
             {

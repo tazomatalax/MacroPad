@@ -73,9 +73,9 @@ namespace RSoft.MacroPad.Forms
             // 
             splitContainer1.Panel2.Controls.Add(groupBox3);
             splitContainer1.Panel2MinSize = 135;
-            splitContainer1.Size = new System.Drawing.Size(1978, 1954);
-            splitContainer1.SplitterDistance = 996;
-            splitContainer1.SplitterWidth = 19;
+            splitContainer1.Size = new System.Drawing.Size(1400, 1060);
+            splitContainer1.SplitterDistance = 320;
+            splitContainer1.SplitterWidth = 8;
             splitContainer1.TabIndex = 0;
             // 
             // groupBox1
@@ -86,7 +86,7 @@ namespace RSoft.MacroPad.Forms
             groupBox1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            groupBox1.Size = new System.Drawing.Size(1978, 996);
+            groupBox1.Size = new System.Drawing.Size(1400, 320);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Keyboard visual";
@@ -100,7 +100,7 @@ namespace RSoft.MacroPad.Forms
             keyboardVisual1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             keyboardVisual1.Name = "keyboardVisual1";
             keyboardVisual1.SelectedAction = BLL.Infrastructure.Model.InputAction.Key1;
-            keyboardVisual1.Size = new System.Drawing.Size(1964, 952);
+            keyboardVisual1.Size = new System.Drawing.Size(1386, 276);
             keyboardVisual1.TabIndex = 0;
             // 
             // groupBox3
@@ -111,7 +111,7 @@ namespace RSoft.MacroPad.Forms
             groupBox3.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             groupBox3.Name = "groupBox3";
             groupBox3.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            groupBox3.Size = new System.Drawing.Size(1978, 939);
+            groupBox3.Size = new System.Drawing.Size(1400, 732);
             groupBox3.TabIndex = 0;
             groupBox3.TabStop = false;
             groupBox3.Text = "Key setup";
@@ -124,7 +124,7 @@ namespace RSoft.MacroPad.Forms
             keyboardLayout2.Controls = null;
             keyboardLayout2.LayerCount = 0;
             keyboardLayout2.LedModeCount = 3;
-            keyboardLayout2.MaxCharacters = 5;
+            keyboardLayout2.MaxCharacters = 18;
             keyboardLayout2.Name = null;
             keyboardLayout2.Products = null;
             keyboardLayout2.SupportsColor = false;
@@ -138,24 +138,25 @@ namespace RSoft.MacroPad.Forms
             keyboardFunction1.MouseButton = BLL.Infrastructure.Model.MouseButton.Left;
             keyboardFunction1.MouseModifier = BLL.Infrastructure.Model.Modifier.None;
             keyboardFunction1.Name = "keyboardFunction1";
-            keyboardFunction1.Size = new System.Drawing.Size(1964, 895);
+            keyboardFunction1.Size = new System.Drawing.Size(1386, 688);
             keyboardFunction1.TabIndex = 0;
             // 
             // statusStrip1
             // 
+            statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { lblStatus, lblCommStatus });
-            statusStrip1.Location = new System.Drawing.Point(0, 2044);
+            statusStrip1.Location = new System.Drawing.Point(0, 1158);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 15, 0);
-            statusStrip1.Size = new System.Drawing.Size(1978, 42);
+            statusStrip1.Size = new System.Drawing.Size(1386, 42);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             lblStatus.AutoSize = false;
-            lblStatus.BackColor = System.Drawing.Color.FromArgb(192, 192, 0);
+            lblStatus.BackColor = System.Drawing.Color.SteelBlue;
             lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             lblStatus.ForeColor = System.Drawing.Color.White;
             lblStatus.Name = "lblStatus";
@@ -170,13 +171,14 @@ namespace RSoft.MacroPad.Forms
             // 
             // menuStrip1
             // 
+            menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             menuStrip1.AutoSize = false;
             menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsSend, tsLayout, toolStripSeparator1, tsAbout });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new System.Windows.Forms.Padding(13, 4, 0, 4);
-            menuStrip1.Size = new System.Drawing.Size(1978, 68);
+            menuStrip1.Size = new System.Drawing.Size(1386, 68);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -240,13 +242,13 @@ namespace RSoft.MacroPad.Forms
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1978, 2086);
+            ClientSize = new System.Drawing.Size(1400, 1200);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
             Controls.Add(splitContainer1);
             MainMenuStrip = menuStrip1;
             Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            MinimumSize = new System.Drawing.Size(1922, 1138);
+            MinimumSize = new System.Drawing.Size(800, 600);
             Name = "MainForm";
             Text = "RSoft MacroPad";
             Deactivate += StopRecording;
