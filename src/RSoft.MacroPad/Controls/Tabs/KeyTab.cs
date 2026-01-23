@@ -52,6 +52,14 @@ namespace RSoft.MacroPad.Controls.Tabs
             set => keyRecorderTextBox1.Sequence = value;
         }
 
+        public event EventHandler<bool> ListeningChanged
+        {
+             add => keyRecorderTextBox1.ListeningChanged += value;
+             remove => keyRecorderTextBox1.ListeningChanged -= value;
+        }
+
+        public bool IsRecording => keyRecorderTextBox1.Listen;
+
         public KeyTab()
         {
             InitializeComponent();

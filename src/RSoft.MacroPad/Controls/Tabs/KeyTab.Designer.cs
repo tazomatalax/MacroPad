@@ -101,7 +101,7 @@
             lblMaxStrokes.Name = "lblMaxStrokes";
             lblMaxStrokes.Size = new System.Drawing.Size(41, 15);
             lblMaxStrokes.TabIndex = 3;
-            lblMaxStrokes.Text = "18";
+            lblMaxStrokes.Text = "5";
             // 
             // KeyTab
             // 

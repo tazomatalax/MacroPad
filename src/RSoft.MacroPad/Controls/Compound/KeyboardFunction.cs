@@ -56,6 +56,12 @@ namespace RSoft.MacroPad.Controls.Compound
             set { mediaKeyTab1.Key = value; }
         }
 
+        public Keys FunctionKey
+        {
+            get => functionKeyTab1.Key;
+            set { functionKeyTab1.Key = value; }
+        }
+
         public MouseButton MouseButton
         {
             get => mouseButtonsTab1.MouseButton;
@@ -80,6 +86,14 @@ namespace RSoft.MacroPad.Controls.Compound
             set { ledTab1.Mode = value; }
         }
 
+        public event EventHandler<bool> ListeningChanged
+        {
+             add => keyTab1.ListeningChanged += value;
+             remove => keyTab1.ListeningChanged -= value;
+        }
+
+        public bool IsRecording => keyTab1.IsRecording;
+
         public KeyboardFunction()
         {
             InitializeComponent();
@@ -96,6 +110,7 @@ namespace RSoft.MacroPad.Controls.Compound
             KeySequence = null;
             Delay = 100;
             MediaKey = Keys.MediaPlayPause;
+            FunctionKey = Keys.F13;
             MouseButton = MouseButton.Left;
             MouseModifier = Modifier.None;
             LedColor = LedColor.Random;
@@ -112,6 +127,8 @@ namespace RSoft.MacroPad.Controls.Compound
                     Function = SetFunction.KeySequence;
                 else if (tabControl2.SelectedTab == tabMedia)
                     Function = SetFunction.MediaKey;
+                else if (tabControl2.SelectedTab == tabFunctionKey)
+                    Function = SetFunction.FunctionKey;
                 else Function = SetFunction.Mouse;
             }
             if (Function != SetFunction.KeySequence)
@@ -133,6 +150,7 @@ namespace RSoft.MacroPad.Controls.Compound
             switch (function)
             {
                 case SetFunction.LED: break;
+                case SetFunction.FunctionKey: tabControl2.SelectTab(tabFunctionKey); break;
                 case SetFunction.KeySequence: tabControl2.SelectTab(tabSequence); break;
                 case SetFunction.MediaKey: tabControl2.SelectTab(tabMedia); break;
                 case SetFunction.Mouse: tabControl2.SelectTab(tabMouse); break;
@@ -146,7 +164,7 @@ namespace RSoft.MacroPad.Controls.Compound
                 keyboardLayout = new KeyboardLayout
                 {
                     LedModeCount = 3,
-                    MaxCharacters = 18,
+                    MaxCharacters = 5,
                     SupportsColor = false,
                     SupportsDelay = false,
                 };

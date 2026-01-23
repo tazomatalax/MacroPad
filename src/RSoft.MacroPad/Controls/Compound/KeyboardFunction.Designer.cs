@@ -36,6 +36,8 @@ namespace RSoft.MacroPad.Controls.Compound
             keyTab1 = new Tabs.KeyTab();
             tabMedia = new System.Windows.Forms.TabPage();
             mediaKeyTab1 = new Tabs.MediaKeyTab();
+            tabFunctionKey = new System.Windows.Forms.TabPage();
+            functionKeyTab1 = new Tabs.FunctionKeyTab();
             tabMouse = new System.Windows.Forms.TabPage();
             mouseButtonsTab1 = new Tabs.MouseButtonsTab();
             tabLed = new System.Windows.Forms.TabPage();
@@ -45,6 +47,7 @@ namespace RSoft.MacroPad.Controls.Compound
             tabControl2.SuspendLayout();
             tabSequence.SuspendLayout();
             tabMedia.SuspendLayout();
+            tabFunctionKey.SuspendLayout();
             tabMouse.SuspendLayout();
             tabLed.SuspendLayout();
             SuspendLayout();
@@ -78,6 +81,7 @@ namespace RSoft.MacroPad.Controls.Compound
             tabControl2.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             tabControl2.Controls.Add(tabSequence);
             tabControl2.Controls.Add(tabMedia);
+            tabControl2.Controls.Add(tabFunctionKey);
             tabControl2.Controls.Add(tabMouse);
             tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             tabControl2.Location = new System.Drawing.Point(4, 3);
@@ -137,6 +141,30 @@ namespace RSoft.MacroPad.Controls.Compound
             mediaKeyTab1.Name = "mediaKeyTab1";
             mediaKeyTab1.Size = new System.Drawing.Size(1213, 138);
             mediaKeyTab1.TabIndex = 0;
+            // 
+            // tabFunctionKey
+            // 
+            tabFunctionKey.Controls.Add(functionKeyTab1);
+            tabFunctionKey.Location = new System.Drawing.Point(4, 27);
+            tabFunctionKey.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabFunctionKey.Name = "tabFunctionKey";
+            tabFunctionKey.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabFunctionKey.Size = new System.Drawing.Size(1221, 452);
+            tabFunctionKey.TabIndex = 3;
+            tabFunctionKey.Text = "Function keys";
+            tabFunctionKey.UseVisualStyleBackColor = true;
+            // 
+            // functionKeyTab1
+            // 
+            functionKeyTab1.Dock = System.Windows.Forms.DockStyle.Fill;
+            functionKeyTab1.Key = System.Windows.Forms.Keys.F13;
+            functionKeyTab1.Location = new System.Drawing.Point(4, 3);
+            functionKeyTab1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            functionKeyTab1.MaximumSize = new System.Drawing.Size(2100, 138);
+            functionKeyTab1.MinimumSize = new System.Drawing.Size(933, 138);
+            functionKeyTab1.Name = "functionKeyTab1";
+            functionKeyTab1.Size = new System.Drawing.Size(1213, 138);
+            functionKeyTab1.TabIndex = 0;
             // 
             // tabMouse
             // 
@@ -202,6 +230,7 @@ namespace RSoft.MacroPad.Controls.Compound
             tabControl2.ResumeLayout(false);
             tabSequence.ResumeLayout(false);
             tabMedia.ResumeLayout(false);
+            tabFunctionKey.ResumeLayout(false);
             tabMouse.ResumeLayout(false);
             tabLed.ResumeLayout(false);
             ResumeLayout(false);
@@ -216,7 +245,9 @@ namespace RSoft.MacroPad.Controls.Compound
         private System.Windows.Forms.TabPage tabSequence;
         private System.Windows.Forms.TabPage tabMedia;
         private System.Windows.Forms.TabPage tabMouse;
+        private System.Windows.Forms.TabPage tabFunctionKey;
         private Tabs.MediaKeyTab mediaKeyTab1;
+        private Tabs.FunctionKeyTab functionKeyTab1;
         private Tabs.MouseButtonsTab mouseButtonsTab1;
         private Tabs.KeyTab keyTab1;
         private Tabs.LedTab ledTab1;

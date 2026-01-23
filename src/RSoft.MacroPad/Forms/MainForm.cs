@@ -12,6 +12,8 @@ public partial class MainForm : Form
     private readonly IUsb _usb = new HidLibUsb();
     private readonly ConfigurationReader _configReader = new();
     private readonly ComposerRepository _composerRepository = new();
+    private readonly ModeManager _modeManager = new();
+    private KeyboardHook? _keyboardHook;
 
     public MainForm()
     {
@@ -19,6 +21,18 @@ public partial class MainForm : Form
         this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
         InitializeLayouts();
         InitializeUsb();
+        InitializeModeManager();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _keyboardHook?.Dispose();
+            components?.Dispose();
+        }
+        
+        base.Dispose(disposing);
     }
 
     #region Init
@@ -31,6 +45,69 @@ public partial class MainForm : Form
             _usb.SupportedDevices = config.SupportedDevices;
 
         _usb.OnConnected += OnDeviceConnected;
+    }
+
+    private void InitializeModeManager()
+    {
+        _keyboardHook = new KeyboardHook();
+        _keyboardHook.OnKeyPressRelease += OnKeyboardHookEvent;
+        
+        _modeManager.ModeChanged += OnModeChanged;
+        UpdateModeDisplay();
+    }
+
+    private bool OnKeyboardHookEvent(KeyInfo keyInfo)
+    {
+        // Allow F13-F18 to pass through when the user is recording keys
+        if (keyboardFunction1.IsRecording)
+        {
+            return true; // Allow all keys when recording
+        }
+        
+        // Only intercept F13-F18 when mode manager is active
+        var key = (Keys)keyInfo.key;
+        
+        if (key >= Keys.F13 && key <= Keys.F18)
+        {
+            // Only handle key down events
+            if (keyInfo.flags == 0) // Key down
+            {
+                if (key == Keys.F18)
+                {
+                    _modeManager.CycleMode();
+                }
+                else
+                {
+                    _modeManager.HandleFunctionKey(key);
+                }
+            }
+            return false; // Block the key from propagating
+        }
+        
+        return true; // Allow other keys to propagate
+    }
+
+    private void OnModeChanged(object sender, WorkflowMode mode)
+    {
+        UpdateModeDisplay();
+    }
+
+    private void UpdateModeDisplay()
+    {
+        if (InvokeRequired)
+        {
+            Invoke(new Action(UpdateModeDisplay));
+            return;
+        }
+        
+        lblMode.Text = $"Mode: {_modeManager.CurrentMode}";
+        lblMode.BackColor = _modeManager.CurrentMode switch
+        {
+            WorkflowMode.VSCODE => Color.CornflowerBlue,
+            WorkflowMode.MEDIA => Color.MediumSeaGreen,
+            WorkflowMode.WINDOW => Color.Orange,
+            _ => Color.Gray
+        };
     }
 
     private void OnDeviceConnected(object? sender, EventArgs e)
@@ -146,6 +223,12 @@ public partial class MainForm : Form
                 keyboardVisual1.SelectedAction,
                 keyboardVisual1.Layer,
                 MediaKeyMapper.Map((VirtualKey)keyboardFunction1.MediaKey)),
+
+            Model.SetFunction.FunctionKey => composer.Key(
+                keyboardVisual1.SelectedAction,
+                keyboardVisual1.Layer,
+                0,
+                [(KeyCodeMapper.Map((VirtualKey)keyboardFunction1.FunctionKey), BLL.Infrastructure.Model.Modifier.None)]),
 
             Model.SetFunction.Mouse => composer.Mouse(
                 keyboardVisual1.SelectedAction,

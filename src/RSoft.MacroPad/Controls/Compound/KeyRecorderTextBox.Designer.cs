@@ -94,9 +94,9 @@
             Controls.Add(button2);
             Controls.Add(button1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            MinimumSize = new System.Drawing.Size(467, 92);
+            MinimumSize = new System.Drawing.Size(467, 250);
             Name = "KeyRecorderTextBox";
-            Size = new System.Drawing.Size(838, 144);
+            Size = new System.Drawing.Size(838, 250);
             ResumeLayout(false);
         }
 

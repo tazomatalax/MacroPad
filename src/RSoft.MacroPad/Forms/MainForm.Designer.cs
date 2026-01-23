@@ -7,19 +7,6 @@ namespace RSoft.MacroPad.Forms
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -38,6 +25,7 @@ namespace RSoft.MacroPad.Forms
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             lblCommStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            lblMode = new System.Windows.Forms.ToolStripStatusLabel();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             tsSend = new System.Windows.Forms.ToolStripMenuItem();
             tsLayout = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,7 +112,7 @@ namespace RSoft.MacroPad.Forms
             keyboardLayout2.Controls = null;
             keyboardLayout2.LayerCount = 0;
             keyboardLayout2.LedModeCount = 3;
-            keyboardLayout2.MaxCharacters = 18;
+            keyboardLayout2.MaxCharacters = 5;
             keyboardLayout2.Name = null;
             keyboardLayout2.Products = null;
             keyboardLayout2.SupportsColor = false;
@@ -145,7 +133,7 @@ namespace RSoft.MacroPad.Forms
             // 
             statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
-            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { lblStatus, lblCommStatus });
+            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { lblStatus, lblCommStatus, lblMode });
             statusStrip1.Location = new System.Drawing.Point(0, 1158);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 15, 0);
@@ -168,6 +156,16 @@ namespace RSoft.MacroPad.Forms
             lblCommStatus.Name = "lblCommStatus";
             lblCommStatus.Size = new System.Drawing.Size(29, 32);
             lblCommStatus.Text = "...";
+            // 
+            // lblMode
+            // 
+            lblMode.AutoSize = false;
+            lblMode.BackColor = System.Drawing.Color.CornflowerBlue;
+            lblMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            lblMode.ForeColor = System.Drawing.Color.White;
+            lblMode.Name = "lblMode";
+            lblMode.Size = new System.Drawing.Size(150, 32);
+            lblMode.Text = "Mode: VSCODE";
             // 
             // menuStrip1
             // 
@@ -272,6 +270,7 @@ namespace RSoft.MacroPad.Forms
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ToolStripStatusLabel lblMode;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsSend;
         private System.Windows.Forms.ToolStripMenuItem tsLayout;

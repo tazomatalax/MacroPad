@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using RSoft.MacroPad.BLL.Infrastructure.Model;
 using RSoft.MacroPad.BLL.Infrastructure.Protocol.Mappers;
 using RSoft.MacroPad.Controls.Simple;
@@ -20,7 +21,7 @@ namespace RSoft.MacroPad.Controls.Compound
 
         private bool _altL, _altR, _shiftL, _shiftR, _ctrlL, _ctrlR, _winL, _winR;
         private IEnumerable<Keys> _applicableKeys = Enum.GetValues(typeof(KeyCode)).Cast<KeyCode>().Select(k => (Keys)k.Map());
-        private int sequenceMaxLength = 18;
+        private int sequenceMaxLength = 5;
 
         private List<KeyStrokeDisplay> _sequenceDisplay = new List<KeyStrokeDisplay>();
 
@@ -52,10 +53,17 @@ namespace RSoft.MacroPad.Controls.Compound
         {
             get => listen;
             set { 
-                checkBox1.Checked = value; 
+                if (listen != value)
+                {
+                    listen = value;
+                    checkBox1.Checked = value; 
+                    ListeningChanged?.Invoke(this, value);
+                }
             }
         }
         public event EventHandler<KeyStroke> KeyStrokeAdded;
+        public event EventHandler<bool> ListeningChanged;
+
         public KeyRecorderTextBox()
         {
             Sequence = new List<KeyStroke>();
@@ -65,7 +73,41 @@ namespace RSoft.MacroPad.Controls.Compound
 
             _sequence.CollectionChanged += SequenceChanged;
             Resize += (s, e) => RefreshDisplayLayout();
+
+            AddSmartNavHelperButtons();
         }
+
+        private void AddSmartNavHelperButtons()
+        {
+            var pnl = new FlowLayoutPanel
+            {
+                Location = new Point(5, 150),
+                Size = new Size(600, 35),
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                FlowDirection = FlowDirection.LeftToRight
+            };
+
+            for (int i = 13; i <= 24; i++)
+            {
+                var btn = new Button
+                {
+                    Text = "F" + i,
+                    Size = new Size(40, 25),
+                    Font = new Font("Segoe UI", 8F),
+                    Margin = new Padding(0, 0, 4, 0)
+                };
+                var key = (Keys)((int)Keys.F13 + (i - 13));
+                btn.Click += (s, e) =>
+                {
+                    AddStroke(new KeyInfo { key = key, scanCode = 0 }, KeyStrokeOperation.Press);
+                };
+                pnl.Controls.Add(btn);
+            }
+            this.Controls.Add(pnl);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
         protected override void Dispose(bool disposing)
         {
@@ -88,7 +130,7 @@ namespace RSoft.MacroPad.Controls.Compound
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            listen = checkBox1.Checked;
+            Listen = checkBox1.Checked;
             checkBox1.Text = Listen ? "■" : "●";
             checkBox1.ForeColor = Listen ? Color.Black : Color.Red;
             panel1.Focus();
@@ -162,7 +204,7 @@ namespace RSoft.MacroPad.Controls.Compound
 
         public void AddStroke(KeyInfo info, KeyStrokeOperation op)
         {
-            if (!_applicableKeys.Contains(info.key) && !IsModifier(info.key))
+            if (!_applicableKeys.Contains(info.key) && !IsModifier(info.key) && !(info.key >= Keys.F13 && info.key <= Keys.F24))
                 return;
             if (_history.Count > 20) _history = _history.Skip(10).ToList();
 
